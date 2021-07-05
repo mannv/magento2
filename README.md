@@ -27,3 +27,7 @@ php magento setup:install \
 --use-rewrites=1 \
 --search-engine=elasticsearch7 --elasticsearch-host=elasticsearch --elasticsearch-port=9200
 ```
+
+```
+php magento module:disable Magento_TwoFactorAuth
+```
