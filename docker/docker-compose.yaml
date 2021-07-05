@@ -1,0 +1,86 @@
+version: '3.9'  # optional since v1.27.0
+
+services:
+#  proxy:
+#    image: jwilder/nginx-proxy
+#    ports:
+#      - "80:80"
+#      - "443:443"
+#    volumes:
+#      - /var/run/docker.sock:/tmp/docker.sock:ro
+#      - ./proxy/certs:/etc/nginx/certs
+#      - ./proxy/config.conf:/etc/nginx/conf.d/custom-config.conf
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ${LARAVEL_CODE_PATH}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+    depends_on:
+      - php-fpm
+      - mysql
+#    environment:
+#      - VIRTUAL_HOST=${DOMAIN}
+  # open https
+  #      - CERT_NAME=shared
+  php-fpm:
+    build:
+      context: ./php-fpm
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+        - ARG_PHP_VERSION=${PHP_VERSION}
+    volumes:
+      - ${LARAVEL_CODE_PATH}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+      - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+  mysql:
+    build: ./mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/app.cnf:/etc/mysql/conf.d/app.cnf
+      - ./mysql/initdb.d/:/docker-entrypoint-initdb.d/
+  elasticsearch:
+    build: ./elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+  kibana:
+    build:
+      context: ./kibana
+#    volumes:
+#      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=mysql
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    volumes:
+      - ./phpmyadmin/config.ini:/usr/local/etc/php/conf.d/phpmyadmin.ini
+volumes:
+  mysql-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
