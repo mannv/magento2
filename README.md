@@ -13,7 +13,7 @@ php /var/www/magento2/bin/magento list
 
 ```
 php magento setup:install \
---base-url=http://localhost \
+--base-url=http://magento2.local \
 --db-host=mysql \
 --db-name=db_web \
 --db-user=default \
