@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="ManNV_HelloWorld::helloworld" title="Hello World" module="ManNV_HelloWorld" sortOrder="51" resource="ManNV_HelloWorld::helloworld"/>
+        <add id="ManNV_HelloWorld::category" title="Manage Category" module="ManNV_HelloWorld" sortOrder="10" action="helloworld/category" resource="ManNV_HelloWorld::category" parent="ManNV_HelloWorld::helloworld"/>
+    </menu>
+</config>
