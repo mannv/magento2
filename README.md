@@ -12,7 +12,7 @@ php /var/www/magento2/bin/magento list
 ```
 
 ```
-php magento setup:install \
+php bin/magento setup:install \
 --base-url=http://magento2.local \
 --db-host=mysql \
 --db-name=db_web \
@@ -31,5 +31,5 @@ php magento setup:install \
 ```
 
 ```
-php magento module:disable Magento_TwoFactorAuth
+php bin/magento module:disable Magento_TwoFactorAuth
 ```
