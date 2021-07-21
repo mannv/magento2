@@ -10,6 +10,11 @@ services:
 #      - /var/run/docker.sock:/tmp/docker.sock:ro
 #      - ./proxy/certs:/etc/nginx/certs
 #      - ./proxy/config.conf:/etc/nginx/conf.d/custom-config.conf
+  varnish:
+    build:
+      context: ./varnish
+    ports:
+      - "80:80"
   nginx:
     build:
       context: ./nginx
@@ -17,8 +22,6 @@ services:
         - http_proxy
         - https_proxy
         - no_proxy
-    ports:
-      - "80:80"
     volumes:
       - ${LARAVEL_CODE_PATH}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
     depends_on:
