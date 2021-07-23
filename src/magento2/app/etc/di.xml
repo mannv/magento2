@@ -397,6 +397,11 @@
         <arguments>
             <argument name="storeManager" xsi:type="object">Magento\Store\Model\StoreManagerInterface\Proxy</argument>
         </arguments>
+        <arguments>
+            <argument name="themes" xsi:type="array">
+                <item name="frontend" xsi:type="string">ManNV/Sunfly</item> <!-- Example: "Magento/backend" -->
+            </argument>
+        </arguments>
     </type>
     <type name="Magento\Framework\Acl" shared="false" />
     <type name="Magento\Framework\App\ObjectManager\ConfigLoader">
