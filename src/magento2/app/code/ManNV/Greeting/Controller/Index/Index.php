@@ -5,6 +5,7 @@ namespace ManNV\Greeting\Controller\Index;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
+use ManNV\Greeting\Helper\Data;
 
 class Index extends Action
 {
@@ -18,15 +19,23 @@ class Index extends Action
      */
     private $messageFactory;
 
-    public function __construct(Context $context, PageFactory $pageFactory, \ManNV\Greeting\Model\MessageFactory $messageFactory)
+    private $helper;
+
+    public function __construct(Context $context, PageFactory $pageFactory,
+                                \ManNV\Greeting\Model\MessageFactory $messageFactory,
+                                Data $helper
+    )
     {
         $this->pageFactory = $pageFactory;
         $this->messageFactory = $messageFactory;
+        $this->helper = $helper;
         parent::__construct($context);
     }
 
     public function execute()
     {
+        echo 'getEnableStatus: ' . $this->helper->getEnableStatus() . '<br />';
+        echo 'getDefaultMessage: ' . $this->helper->getDefaultMessage() . '<br />';
         $message = $this->messageFactory->create();
         $collection = $message->getCollection();
         foreach ($collection as $item) {
