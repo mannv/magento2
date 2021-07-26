@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="ManNV_Greeting::group" title="Greeting" module="ManNV_Greeting" sortOrder="51" resource="ManNV_Greeting::index" />
+        <add id="ManNV_Greeting::index" title="Manage Message" module="ManNV_Greeting" sortOrder="10" action="greeting/index/index" resource="ManNV_Greeting::index" parent="ManNV_Greeting::group" />
+        <add id="ManNV_Greeting::category" title="Manage Message" module="ManNV_Greeting" sortOrder="10" action="greeting/category/index" resource="ManNV_Greeting::category" parent="ManNV_Greeting::group" />
+    </menu>
+</config>

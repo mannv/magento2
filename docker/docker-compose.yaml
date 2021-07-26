@@ -1,20 +1,22 @@
 version: '3.9'  # optional since v1.27.0
 
 services:
-#  proxy:
-#    image: jwilder/nginx-proxy
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    volumes:
-#      - /var/run/docker.sock:/tmp/docker.sock:ro
-#      - ./proxy/certs:/etc/nginx/certs
-#      - ./proxy/config.conf:/etc/nginx/conf.d/custom-config.conf
+  #  proxy:
+  #    image: jwilder/nginx-proxy
+  #    ports:
+  #      - "80:80"
+  #      - "443:443"
+  #    volumes:
+  #      - /var/run/docker.sock:/tmp/docker.sock:ro
+  #      - ./proxy/certs:/etc/nginx/certs
+  #      - ./proxy/config.conf:/etc/nginx/conf.d/custom-config.conf
   varnish:
     build:
       context: ./varnish
     ports:
       - "80:80"
+    depends_on:
+      - nginx
   nginx:
     build:
       context: ./nginx
@@ -27,8 +29,8 @@ services:
     depends_on:
       - php-fpm
       - mysql
-#    environment:
-#      - VIRTUAL_HOST=${DOMAIN}
+  #    environment:
+  #      - VIRTUAL_HOST=${DOMAIN}
   # open https
   #      - CERT_NAME=shared
   php-fpm:
@@ -69,8 +71,8 @@ services:
   kibana:
     build:
       context: ./kibana
-#    volumes:
-#      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    #    volumes:
+    #      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
   phpmyadmin:
