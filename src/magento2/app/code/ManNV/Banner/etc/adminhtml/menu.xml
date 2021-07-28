@@ -7,7 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="ManNV_Banner::banner_manager" title="Banner manager" translate="title" module="ManNV_Banner" sortOrder="0" action="banner/index" resource="ManNV_Banner::index" />
+        <add id="ManNV_Banner::banner_manager" title="Banner manager" translate="title" module="ManNV_Banner" sortOrder="10" action="banner/index" resource="ManNV_Banner::index" />
         <add id="ManNV_Banner::index" module="ManNV_Banner" action="banner/banner/index" title="Banner manager" translate="title" sortOrder="0" parent="ManNV_Banner::banner_manager" resource="ManNV_Banner::index" />
         <add id="ManNV_Banner::new" module="ManNV_Banner" action="banner/banner/new" title="Create new banner" translate="title" sortOrder="1" parent="ManNV_Banner::banner_manager" resource="ManNV_Banner::new" />
     </menu>
