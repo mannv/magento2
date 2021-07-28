@@ -17,6 +17,9 @@ services:
       - "80:80"
     depends_on:
       - nginx
+    volumes:
+      - ./varnish/etc/default/varnish:/etc/default/varnish
+      - ./varnish/etc/varnish/default.vcl:/etc/varnish/default.vcl
   nginx:
     build:
       context: ./nginx

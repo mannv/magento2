@@ -22,6 +22,7 @@ class Index extends Action
     public function execute()
     {
         $resultPage = $this->pageFactory->create();
+        $resultPage->setActiveMenu('ManNV_Greeting::group');
         $resultPage->getConfig()->getTitle()->prepend('Admin Greeting Message');
         return $resultPage;
     }

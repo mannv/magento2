@@ -5,5 +5,8 @@
         <route id="bai1_admin" frontName="greeting">
             <module name="ManNV_Greeting"/>
         </route>
+        <route id="bai1_admin_new" frontName="new">
+            <module name="ManNV_Greeting"/>
+        </route>
     </router>
 </config>

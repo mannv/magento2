@@ -1,1 +1,11 @@
 VARNISH_LISTEN_PORT=80
+DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+         -f ${VARNISH_VCL_CONF} \
+         -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+         -p thread_pool_min=${VARNISH_MIN_THREADS} \
+         -p thread_pool_max=${VARNISH_MAX_THREADS} \
+         -p http_resp_hdr_len=65536 \
+         -p http_resp_size=98304 \
+         -p workspace_backend=98304 \
+         -S ${VARNISH_SECRET_FILE} \
+         -s ${VARNISH_STORAGE}"
