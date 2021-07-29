@@ -32,4 +32,5 @@ php bin/magento setup:install \
 
 ```
 php bin/magento module:disable Magento_TwoFactorAuth
+
 ```
