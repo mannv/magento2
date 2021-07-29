@@ -7,11 +7,23 @@ use Magento\Framework\Model\AbstractModel;
 
 class Banner extends AbstractModel implements IdentityInterface
 {
-    const CACHE_TAG = 'mannv_banner';
+    /**
+     * CMS page cache tag
+     */
+    const CACHE_TAG = 'mannv_banner_cache';
 
-    protected $_cacheTag = 'mannv_banner';
+    /**
+     * @var string
+     */
+    protected $_cacheTag = self::CACHE_TAG;
 
+    /**
+     * Prefix of model events names
+     *
+     * @var string
+     */
     protected $_eventPrefix = 'mannv_banner';
+
 
     public function _construct()
     {
@@ -21,10 +33,5 @@ class Banner extends AbstractModel implements IdentityInterface
     public function getIdentities()
     {
         return [self::CACHE_TAG . '_' . $this->getId()];
-    }
-
-    public function getDefaultValues()
-    {
-        return [];
     }
 }
