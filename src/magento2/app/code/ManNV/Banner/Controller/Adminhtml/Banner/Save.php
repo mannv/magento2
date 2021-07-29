@@ -7,12 +7,12 @@
 
 namespace ManNV\Banner\Controller\Adminhtml\Banner;
 
-use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 
 /**
  * Create CMS page action.
  */
-class NewAction extends \Magento\Backend\App\Action implements HttpGetActionInterface
+class Save extends \Magento\Backend\App\Action implements HttpPostActionInterface
 {
     /**
      * Authorization level of a basic admin session
@@ -46,8 +46,12 @@ class NewAction extends \Magento\Backend\App\Action implements HttpGetActionInte
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Forward $resultForward */
-        $resultForward = $this->resultForwardFactory->create();
-        return $resultForward->forward('edit');
+        $data = $this->getRequest()->getPostValue();
+        echo '<pre>' . print_r($data, true) . '</pre>';
+        die;
+        die('sss');
+//        /** @var \Magento\Backend\Model\View\Result\Forward $resultForward */
+//        $resultForward = $this->resultForwardFactory->create();
+//        return $resultForward->forward('edit');
     }
 }
