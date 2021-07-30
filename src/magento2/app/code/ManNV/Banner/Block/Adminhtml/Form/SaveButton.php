@@ -7,7 +7,6 @@
 namespace ManNV\Banner\Block\Adminhtml\Form;
 
 use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
-use Magento\Ui\Component\Control\Container;
 
 /**
  * Class SaveButton
@@ -21,7 +20,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
     public function getButtonData()
     {
         return [
-            'label' => __('Save banner'),
+            'label' => __('Save'),
             'class' => 'save primary',
             'data_attribute' => [
                 'mage-init' => [
@@ -41,8 +40,8 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                     ]
                 ]
             ],
-            'class_name' => Container::SPLIT_BUTTON,
-            'options' => $this->getOptions(),
+//            'class_name' => Container::SPLIT_BUTTON,
+//            'options' => $this->getOptions(),
         ];
     }
 

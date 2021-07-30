@@ -136,5 +136,10 @@
                 <sortable>false</sortable>
             </settings>
         </column>
+        <actionsColumn name="actions" class="ManNV\Banner\Ui\Component\Banner\Actions">
+            <settings>
+                <label translate="true">Actions</label>
+            </settings>
+        </actionsColumn>
     </columns>
 </listing>

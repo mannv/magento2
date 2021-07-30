@@ -31,17 +31,9 @@ class GenericButton
      *
      * @return int|null
      */
-    public function getBlockId()
+    public function getBannerId()
     {
-//        var_dump('getBlockID');
-        return 0;
-//        try {
-//            return $this->blockRepository->getById(
-//                $this->context->getRequest()->getParam('block_id')
-//            )->getId();
-//        } catch (NoSuchEntityException $e) {
-//        }
-//        return null;
+        return (int)$this->context->getRequest()->getParam('id');
     }
 
     /**

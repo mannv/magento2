@@ -19,10 +19,10 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
     public function getButtonData()
     {
         $data = [];
-        if ($this->getBlockId()) {
+        if ($this->getBannerId()) {
             $data = [
                 'label' => __('Delete Block'),
-                'class' => 'delete',
+                'class' => 'delete action-secondary',
                 'on_click' => 'deleteConfirm(\'' . __(
                         'Are you sure you want to do this?'
                     ) . '\', \'' . $this->getDeleteUrl() . '\', {"data": {}})',
@@ -39,6 +39,6 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
      */
     public function getDeleteUrl()
     {
-        return $this->getUrl('*/*/delete', ['id' => $this->getBlockId()]);
+        return $this->getUrl('*/*/delete', ['id' => $this->getBannerId()]);
     }
 }
