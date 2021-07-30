@@ -8,6 +8,9 @@ namespace ManNV\Banner\Controller\Adminhtml\Banner;
 
 use Magento\Backend\App\Action;
 use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use ManNV\Banner\Api\BannerRepositoryInterface;
+use ManNV\Banner\Model\BannerFactory;
 
 /**
  * Edit CMS page action.
@@ -34,6 +37,16 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
     protected $resultPageFactory;
 
     /**
+     * @var BannerRepositoryInterface
+     */
+    private $bannerRepository;
+
+    /**
+     * @var BannerFactory
+     */
+    private $bannerFactory;
+
+    /**
      * @param Action\Context $context
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Framework\Registry $registry
@@ -41,9 +54,13 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
     public function __construct(
         Action\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        BannerRepositoryInterface $bannerRepository,
+        BannerFactory $bannerFactory
     )
     {
+        $this->bannerFactory = $bannerFactory;
+        $this->bannerRepository = $bannerRepository;
         $this->resultPageFactory = $resultPageFactory;
         $this->_coreRegistry = $registry;
         parent::__construct($context);
@@ -74,27 +91,27 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
 
         // 1. Get ID and create model
         $id = $this->getRequest()->getParam('id');
-//        $model = $this->_objectManager->create(\Magento\Cms\Model\Page::class);
+        /** @var \ManNV\Banner\Model\Banner $model */
+        $model = $this->bannerFactory->create();
 //
 //        // 2. Initial checking
-//        if ($id) {
-//            $model->load($id);
-//            if (!$model->getId()) {
-//                $this->messageManager->addErrorMessage(__('This page no longer exists.'));
-//                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-//                $resultRedirect = $this->resultRedirectFactory->create();
-//                return $resultRedirect->setPath('*/*/');
-//            }
-//        }
-//
-//        $this->_coreRegistry->register('cms_page', $model);
+        if ($id) {
+            try {
+                $model = $this->bannerRepository->getById($id);
+            } catch (NoSuchEntityException $e) {
+                $this->messageManager->addErrorMessage(__('This banner no longer exists.'));
+                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+                $resultRedirect = $this->resultRedirectFactory->create();
+                return $resultRedirect->setPath('*/*/');
+            }
+        }
+
+        $this->_coreRegistry->register('mannv_banner', $model);
 
         // 5. Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->_initAction();
         $resultPage->getConfig()->getTitle()->prepend($id ? __('Edit banner') : __('New banner'));
-//        $resultPage->getConfig()->getTitle()
-//            ->prepend($model->getId() ? $model->getTitle() : __('New Page'));
 
         return $resultPage;
     }
