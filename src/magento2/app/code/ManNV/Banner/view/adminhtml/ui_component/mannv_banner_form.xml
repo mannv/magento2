@@ -54,18 +54,12 @@
             </settings>
         </field>
         <field name="name" formElement="input">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">banner</item>
-                </item>
-            </argument>
             <settings>
                 <validation>
                     <rule name="required-entry" xsi:type="boolean">true</rule>
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Name</label>
-                <dataScope>name</dataScope>
             </settings>
         </field>
         <field name="description" formElement="textarea">
@@ -84,11 +78,30 @@
                 <label translate="true">URL</label>
             </settings>
         </field>
-        <field name="image" formElement="input">
+<!--        <field name="image" formElement="image">-->
+<!--            <settings>-->
+<!--                <dataType>text</dataType>-->
+<!--                <label translate="true">Image</label>-->
+<!--            </settings>-->
+<!--        </field>-->
+
+        <field name="imageBanner" formElement="imageUploader">
             <settings>
-                <dataType>text</dataType>
+                <notice translate="true">Some notice.</notice>
                 <label translate="true">Image</label>
+                <componentType>imageUploader</componentType>
             </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <allowedExtensions>jpg jpeg gif png</allowedExtensions>
+                        <maxFileSize>2097152</maxFileSize>
+                        <uploaderConfig>
+                            <param xsi:type="string" name="url">banner/image/upload</param>
+                        </uploaderConfig>
+                    </settings>
+                </imageUploader>
+            </formElements>
         </field>
     </fieldset>
 

@@ -2,6 +2,9 @@
 
 namespace ManNV\Banner\Model;
 
+use Magento\Framework\App\ObjectManager;
+use Magento\Framework\UrlInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use ManNV\Banner\Model\ResourceModel\Banner\CollectionFactory;
 
@@ -13,6 +16,8 @@ class DataProvider extends AbstractDataProvider
      */
     protected $loadedData;
 
+    private $storeManager;
+
     /**
      * DataProvider constructor.
      * @param $name
@@ -21,8 +26,16 @@ class DataProvider extends AbstractDataProvider
      * @param array $meta
      * @param array $data
      */
-    public function __construct($name, $primaryFieldName, $requestFieldName, CollectionFactory $collectionFactory, array $meta = [], array $data = [])
-    {
+    public function __construct(
+        $name,
+        $primaryFieldName,
+        $requestFieldName,
+        CollectionFactory $collectionFactory,
+        StoreManagerInterface $storeManager,
+        array $meta = [],
+        array $data = []
+    ) {
+        $this->storeManager = $storeManager;
         $this->collection = $collectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
@@ -37,8 +50,15 @@ class DataProvider extends AbstractDataProvider
         }
         $items = $this->collection->getItems();
         /** @var $banner \ManNV\Banner\Model\Banner */
+        $imageUploader = ObjectManager::getInstance()->get('ManNV\Banner\BannerImageUpload');
         foreach ($items as $banner) {
-            $this->loadedData[$banner->getId()] = $banner->getData();
+            $row = $banner->getData();
+            $imageUrl = $this->storeManager->getStore()->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $imageUploader->getBasePath() . '/' . $row['image'];
+            $row['imageBanner'][0]['url'] = $imageUrl;
+            $row['imageBanner'][0]['type'] = 'image';
+            $row['imageBanner'][0]['name'] = $row['image'];
+            $row['imageBanner'][0]['size'] = 0;
+            $this->loadedData[$banner->getId()] = $row;
         }
         return $this->loadedData;
     }
