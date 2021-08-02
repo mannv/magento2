@@ -71,7 +71,7 @@
         <field name="url" formElement="input">
             <settings>
                 <validation>
-                    <rule name="required-entry" xsi:type="boolean">true</rule>
+<!--                    <rule name="required-entry" xsi:type="boolean">true</rule>-->
                     <rule name="validate-url" xsi:type="boolean">true</rule>
                 </validation>
                 <dataType>text</dataType>

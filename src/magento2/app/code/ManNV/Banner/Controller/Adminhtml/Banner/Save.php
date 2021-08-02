@@ -8,12 +8,11 @@
 namespace ManNV\Banner\Controller\Adminhtml\Banner;
 
 use Magento\Framework\App\Action\HttpPostActionInterface;
-use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Filesystem;
 use ManNV\Banner\Api\BannerRepositoryInterface;
+use ManNV\Banner\Controller\Adminhtml\Traits\RemoveImage;
 use ManNV\Banner\Model\BannerFactory;
 
 /**
@@ -21,6 +20,8 @@ use ManNV\Banner\Model\BannerFactory;
  */
 class Save extends \Magento\Backend\App\Action implements HttpPostActionInterface
 {
+    use RemoveImage;
+
     /**
      * Authorization level of a basic admin session
      *
@@ -59,12 +60,8 @@ class Save extends \Magento\Backend\App\Action implements HttpPostActionInterfac
         \Magento\Backend\Model\View\Result\ForwardFactory $resultForwardFactory,
         BannerFactory $bannerFactory,
         BannerRepositoryInterface $bannerRepository,
-        DataPersistorInterface $dataPersistor,
-        Filesystem $filesystem,
-        \Magento\Framework\Filesystem\Driver\File $file
+        DataPersistorInterface $dataPersistor
     ) {
-        $this->file = $file;
-        $this->filesystem = $filesystem;
         $this->dataPersistor = $dataPersistor;
         $this->resultForwardFactory = $resultForwardFactory;
         $this->bannerFactory = $bannerFactory
@@ -104,13 +101,17 @@ class Save extends \Magento\Backend\App\Action implements HttpPostActionInterfac
             $model->setUrl($data['url']);
             $model->setDescription($data['description']);
             $model->setName($data['name']);
-            $model->setImage($data['imageBanner']['0']['name']);
+
+            $image = array_shift($data['imageBanner']);
+            if ($this->hasImageUpload($image)) {
+                $model->setImage($image['name']);
+            }
 
             try {
                 $this->bannerRepository->save($model);
 
-                if (!empty($oldImage)) {
-                    $this->removeOldImage($oldImage);
+                if ($this->hasImageUpload($image) && !empty($oldImage)) {
+                    $this->removeImage($oldImage);
                 }
 
                 $this->messageManager->addSuccessMessage(__('You saved the banner.'));
@@ -129,13 +130,8 @@ class Save extends \Magento\Backend\App\Action implements HttpPostActionInterfac
         return $resultRedirect->setPath('*/*/new');
     }
 
-    private function removeOldImage($oldImage)
+    private function hasImageUpload($image)
     {
-        $mediaRootDir = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA)->getAbsolutePath();
-        $bannerBasePath = ObjectManager::getInstance()->get('ManNV\Banner\BannerImageUpload')->getBasePath();
-        $fullPath = $mediaRootDir . $bannerBasePath . '/' . $oldImage;
-        if ($this->file->isExists($fullPath)) {
-            $this->file->deleteFile($fullPath);
-        }
+        return str_contains($image['url'], '/banner/tmp/images/');
     }
 }

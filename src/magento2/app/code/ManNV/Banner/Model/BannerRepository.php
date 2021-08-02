@@ -10,10 +10,13 @@ use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use ManNV\Banner\Api\BannerRepositoryInterface;
 use ManNV\Banner\Api\Data\BannerInterface;
+use ManNV\Banner\Controller\Adminhtml\Traits\RemoveImage;
 
 
 class BannerRepository implements BannerRepositoryInterface
 {
+    use RemoveImage;
+
     /**
      * @var BannerFactory
      */
@@ -50,6 +53,7 @@ class BannerRepository implements BannerRepositoryInterface
     {
         try {
             $this->resource->delete($model);
+            $this->removeImage($model->getImage());
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(
                 __('Could not delete the banner: %1', $exception->getMessage())
@@ -62,5 +66,4 @@ class BannerRepository implements BannerRepositoryInterface
     {
         return $this->delete($this->getById($id));
     }
-
 }
