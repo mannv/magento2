@@ -1,0 +1,20 @@
+<?php
+
+$banners = $this->getData('banners');
+
+?>
+<?php
+if (!empty($banners)) {
+    ?>
+    <ul>
+        <?php
+        foreach ($banners as $item) {
+            ?>
+            <li><img src="<?php echo $item['image'] ?>" alt="<?php echo $item['name'] ?>"></li>
+            <?php
+        }
+        ?>
+    </ul>
+    <?php
+}
+?>

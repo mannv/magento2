@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="mannv_banner_widget" class="ManNV\Banner\Block\Widget\ListBanner">
+        <label translate="true">ManNV Banner widget</label>
+        <description translate="true">show banner to home page</description>
+        <parameters>
+            <parameter name="duration" xsi:type="text" required="true" visible="true">
+                <label translate="true">Duration</label>
+            </parameter>
+            <parameter name="auto" xsi:type="select" visible="true"
+                       source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Auto swiper</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>
