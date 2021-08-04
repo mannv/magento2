@@ -1,20 +1,56 @@
 <?php
 
 $banners = $this->getData('banners');
+$auto = $this->getData('auto');
+$duration = $this->getData('duration');
+var_dump($auto);
+var_dump($duration);
 
 ?>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/swiper/swiper-bundle.min.css"
+/>
 <?php
 if (!empty($banners)) {
     ?>
-    <ul>
-        <?php
-        foreach ($banners as $item) {
-            ?>
-            <li><img src="<?php echo $item['image'] ?>" alt="<?php echo $item['name'] ?>"></li>
+    <div class="swiper-container mySwiper">
+        <div class="swiper-wrapper">
             <?php
-        }
-        ?>
-    </ul>
+            foreach ($banners as $item) {
+                ?>
+                <div class="swiper-slide">
+                    <img src="<?php echo $item['image'] ?>" alt="<?php echo $item['name'] ?>">
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
     <?php
 }
 ?>
+
+<!-- Initialize Swiper -->
+<script>
+    require(['jquery', 'mannv_banner_swiper'], function ($, Swiper) {
+        const auto = <?php echo $auto ?>;
+        let swiperConfig = {
+            loop: true,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        }
+        if (auto === 1) {
+            swiperConfig['autoplay'] = {
+                delay: <?php echo $duration ?>,
+                disableOnInteraction: false,
+            }
+        }
+
+        new Swiper(".mySwiper", swiperConfig);
+    })
+</script>
